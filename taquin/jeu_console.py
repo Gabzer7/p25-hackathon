@@ -26,43 +26,43 @@ def voisins(pos):
             v.append((ni, nj))
     return v
 
-def position_val(E, val):
+def trouve_case(grille, val):  # 🔴 MODIF
     for i in range(3):
         for j in range(3):
-            if E[i][j] == val:
+            if grille[i][j] == val:
                 return i, j
             
-def intervertit(E, pos):
-    i0, j0 = position_val(E, '*')
+def intervertit(grille, pos):
+    i0, j0 = trouve_case(grille, '*')
     i, j = pos
-    E[i0][j0], E[i][j] = E[i][j], E[i0][j0]
-            
-def melange(E, n=100):
-    for _ in range(n):
-        pos_vide = position_val(E, '*')
-        voisins_pos = voisins(pos_vide)
-        intervertit(E, random.choice(voisins_pos))
+    grille[i0][j0], grille[i][j] = grille[i][j], grille[i0][j0]
 
-ER = [[1, 2, 3],
+
+
+solution = [[1, 2, 3],
       [4, 5, 6],
       [7, 8, '*']]
 
-E = [ligne[:] for ligne in ER]
-melange(E)
+def melange(grille, n=50):  
+    for _ in range(n):
+        vide = trouve_case(grille, '*')  
+        voisins_pos = voisins(vide)
+        i,j = random.choice(voisins_pos)  
+        intervertit(grille, (i,j)) 
+
+grille = [ligne[:] for ligne in solution]
+melange(grille)
+
+            
+
+
+
 
 nbcoups = 0
 gagne = False
 
 
 
-
-
-
-
-def intervertit(E, pos):
-    i0, j0 = position_val(E, '*')
-    i, j = pos
-    E[i0][j0], E[i][j] = E[i][j], E[i0][j0]
 
 
 
@@ -75,8 +75,8 @@ def dessine():
 
     for i in range(3):
         for j in range(3):
-            if E[i][j] != '*':
-                txt = font.render(str(E[i][j]), True, NOIR)
+            if grille[i][j] != '*':
+                txt = font.render(str(grille[i][j]), True, NOIR)
                 rect = txt.get_rect(center=(j*CASE+50, i*CASE+50))
                 screen.blit(txt, rect)
 
@@ -101,10 +101,10 @@ while True:
             x, y = event.pos
             if y < 300:
                 i, j = y // CASE, x // CASE
-                if (i, j) in voisins(position_val(E, '*')):
-                    intervertit(E, (i, j))
+                if (i, j) in voisins(trouve_case(grille, '*')):
+                    intervertit(grille, (i, j))
                     nbcoups += 1
-                    if E == ER:
+                    if grille == solution:
                         gagne = True
 
     dessine()
