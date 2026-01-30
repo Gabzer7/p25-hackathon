@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+from solveur_dijkstra import resoudre_dijkstra
 
 pygame.init()
 
