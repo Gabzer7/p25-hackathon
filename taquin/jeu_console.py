@@ -103,8 +103,8 @@ def dessine():
     screen.blit(info, (20, 340))
 
     if gagne:
-        msg = small_font.render("Gagné ! Bravo 🎉", True, BLANC)
-        screen.blit(msg, (130, 340))
+        msg = small_font.render("Gagné !", True, BLANC)
+        screen.blit(msg, (150, 340))
  
 
 
