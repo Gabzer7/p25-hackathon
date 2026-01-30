@@ -2,6 +2,17 @@
 
 from collections import deque
 
+class Board:
+
+    def __init__(self, l):
+      self.positions = tuple(l)
+
+    def __eq__(self, other):
+      return self.positions == other.positions
+   
+    def __hash__(self):
+      return hash(self.positions)
+
 def voisins(configuration):  # renvoie les 4 configurations suivantes possibles en fonction de celle donnée au départ
     voisins = []
     i = configuration.index(0) # recherche le 0 dans le jeu
