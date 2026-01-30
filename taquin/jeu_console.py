@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 
 pygame.init()
 
@@ -18,28 +19,6 @@ pygame.display.set_caption("Jeu du taquin")
 font = pygame.font.SysFont(None, 48)
 small_font = pygame.font.SysFont(None, 24)
 
-ER = [[1, 2, 3],
-      [4, 5, 6],
-      [7, 8, '*']]
-
-E = [[5, 2, 3],
-     [1, 4, '*'],
-     [7, 8, 6]]
-
-nbcoups = 0
-gagne = False
-
-
-# ======================
-# LOGIQUE
-# ======================
-def position_val(E, val):
-    for i in range(3):
-        for j in range(3):
-            if E[i][j] == val:
-                return i, j
-
-
 def voisins(pos):
     i, j = pos
     v = []
@@ -48,6 +27,37 @@ def voisins(pos):
         if 0 <= ni < 3 and 0 <= nj < 3:
             v.append((ni, nj))
     return v
+
+def position_val(E, val):
+    for i in range(3):
+        for j in range(3):
+            if E[i][j] == val:
+                return i, j
+def intervertit(E, pos):
+    i0, j0 = position_val(E, '*')
+    i, j = pos
+    E[i0][j0], E[i][j] = E[i][j], E[i0][j0]
+            
+def melange(E, n=100):
+    for _ in range(n):
+        pos_vide = position_val(E, '*')
+        voisins_pos = voisins(pos_vide)
+        intervertit(E, random.choice(voisins_pos))
+
+ER = [[1, 2, 3],
+      [4, 5, 6],
+      [7, 8, '*']]
+
+E = [ligne[:] for ligne in ER]
+melange(E)
+
+nbcoups = 0
+gagne = False
+
+
+
+
+
 
 
 def intervertit(E, pos):
