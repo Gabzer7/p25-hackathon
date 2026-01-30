@@ -55,13 +55,8 @@ melange(grille)
 
             
 
-
-
-
 nbcoups = 0
 gagne = False
-
-
 
 
 
