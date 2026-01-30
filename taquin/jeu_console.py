@@ -5,7 +5,7 @@ from solveur_dijkstra import resoudre_dijkstra
 
 pygame.init()
 
-#  On configure l'esthétique
+#On configure l'esthétique
 TAILLE = 300
 CASE = 100
 HAUTEUR_TOTAL = 400
@@ -24,12 +24,10 @@ pygame.display.set_caption("Jeu du taquin")
 font = pygame.font.SysFont("arial", 50, bold=True)
 small_font = pygame.font.SysFont("arial", 24)
 
-# Réglages animation auto-solve
+
 DELAI_MS = 120  # 60 rapide, 120 moyen, 200 lent
 
-# ----------------------
-# Logique du jeu
-# ----------------------
+
 def voisins(pos):
     i, j = pos
     v = []
@@ -99,9 +97,7 @@ melange(grille)
 nbcoups = 0
 gagne = False
 
-# ----------------------
-# Affichage
-# ----------------------
+
 def dessine():
     screen.fill(BLEU_NUIT)
 
@@ -146,16 +142,14 @@ def dessine():
 
 clock = pygame.time.Clock()
 
-# ----------------------
-# Boucle principale
-# ----------------------
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-        # Touches clavier (R doit marcher même si gagne == True)
+        # Touches clavier (R doit marcher même si gagne est True)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
                 reset_jeu()
