@@ -4,9 +4,7 @@ import random
 
 pygame.init()
 
-# ======================
-# PARAMÈTRES
-# ======================
+#on fixe les paramètres de l'interface
 TAILLE = 300
 CASE = 100
 BLANC = (255, 255, 255)
@@ -33,6 +31,7 @@ def position_val(E, val):
         for j in range(3):
             if E[i][j] == val:
                 return i, j
+            
 def intervertit(E, pos):
     i0, j0 = position_val(E, '*')
     i, j = pos
@@ -66,9 +65,7 @@ def intervertit(E, pos):
     E[i0][j0], E[i][j] = E[i][j], E[i0][j0]
 
 
-# ======================
-# AFFICHAGE
-# ======================
+
 def dessine():
     screen.fill(BLANC)
 
@@ -91,9 +88,7 @@ def dessine():
         screen.blit(msg, (200, 330))
 
 
-# ======================
-# BOUCLE JEU
-# ======================
+
 clock = pygame.time.Clock()
 
 while True:
