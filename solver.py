@@ -1,9 +1,9 @@
-# On commence par créer le graphe de toutes les configurations possibles 
+# On commence par créer le graphe de toutes les configurations possibles en fonction de celle de départ 
 
 from collections import deque
 
 class Board:
-
+    
     def __init__(self, l):
       self.positions = tuple(l)
 
@@ -29,6 +29,7 @@ def voisins(configuration):  # renvoie les 4 configurations suivantes possibles 
             voisins.append(nouvelle_config)
 
     return voisins
+
 
 def construire_graphe(config_initiale):
     graphe = {}
