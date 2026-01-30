@@ -3,6 +3,7 @@
 from collections import deque
 
 class Board:
+    
     def __init__(self, l):
       self.positions = tuple(l)
 
@@ -11,7 +12,6 @@ class Board:
    
     def __hash__(self):
       return hash(self.positions)
-    
 
 def voisins(configuration):  # renvoie les 4 configurations suivantes possibles en fonction de celle donnée au départ
     voisins = []
