@@ -26,7 +26,7 @@ def voisins(pos):
             v.append((ni, nj))
     return v
 
-def trouve_case(grille, val):  # 🔴 MODIF
+def trouve_case(grille, val):  
     for i in range(3):
         for j in range(3):
             if grille[i][j] == val:
@@ -69,9 +69,14 @@ gagne = False
 def dessine():
     screen.fill(BLANC)
 
-    for i in range(4):
-        pygame.draw.line(screen, NOIR, (0, i*CASE), (300, i*CASE), 2)
-        pygame.draw.line(screen, NOIR, (i*CASE, 0), (i*CASE, 300), 2)
+    pygame.draw.line(screen, NOIR, (0, 0), (300, 0), 2)  
+    pygame.draw.line(screen, NOIR, (0, 100), (300, 100), 2) 
+    pygame.draw.line(screen, NOIR, (0, 200), (300, 200), 2)  
+    pygame.draw.line(screen, NOIR, (0, 300), (300, 300), 2)  
+    pygame.draw.line(screen, NOIR, (0, 0), (0, 300), 2)  
+    pygame.draw.line(screen, NOIR, (100, 0), (100, 300), 2)  
+    pygame.draw.line(screen, NOIR, (200, 0), (200, 300), 2)  
+    pygame.draw.line(screen, NOIR, (300, 0), (300, 300), 2) 
 
     for i in range(3):
         for j in range(3):
@@ -101,7 +106,8 @@ while True:
             x, y = event.pos
             if y < 300:
                 i, j = y // CASE, x // CASE
-                if (i, j) in voisins(trouve_case(grille, '*')):
+                vi, vj = trouve_case(grille, '*')
+                if (i,j) in [(vi-1,vj),(vi+1,vj),(vi,vj-1),(vi,vj+1)]: 
                     intervertit(grille, (i, j))
                     nbcoups += 1
                     if grille == solution:
