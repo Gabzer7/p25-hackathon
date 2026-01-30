@@ -4,19 +4,26 @@ import random
 
 pygame.init()
 
-#on fixe les paramètres de l'interface
+#  On configure l'esthétique
 TAILLE = 300
 CASE = 100
+HAUTEUR_TOTAL = 400 
+
+#  couleurs
+BLEU_NUIT = (30, 30, 50)       # Fond
+TURQUOISE = (20, 160, 180)     # Tuiles
+ORANGE = (255, 140, 0)         # Survol souris
+VERT_VICTOIRE = (46, 204, 113) # Victoire
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
-GRIS = (200, 200, 200)
 
-screen = pygame.display.set_mode((300, 400))
+screen = pygame.display.set_mode((TAILLE, HAUTEUR_TOTAL))
 pygame.display.set_caption("Jeu du taquin")
 
-font = pygame.font.SysFont(None, 48)
-small_font = pygame.font.SysFont(None, 24)
+font = pygame.font.SysFont("arial", 50, bold=True)
+small_font = pygame.font.SysFont("arial", 24)
 
+# code du jeu
 def voisins(pos):
     i, j = pos
     v = []
@@ -37,8 +44,6 @@ def intervertit(grille, pos):
     i, j = pos
     grille[i0][j0], grille[i][j] = grille[i][j], grille[i0][j0]
 
-
-
 solution = [[1, 2, 3],
       [4, 5, 6],
       [7, 8, '*']]
@@ -53,49 +58,59 @@ def melange(grille, n=50):
 grille = [ligne[:] for ligne in solution]
 melange(grille)
 
-            
-
-
-
-
 nbcoups = 0
 gagne = False
 
-
-
-
-
-
+# code pour l'esthétique du jeu 
 def dessine():
-    screen.fill(BLANC)
+    
+    screen.fill(BLEU_NUIT)
+    
+    # Position de la souris 
+    mx, my = pygame.mouse.get_pos()
 
-    pygame.draw.line(screen, NOIR, (0, 0), (300, 0), 2)  
-    pygame.draw.line(screen, NOIR, (0, 100), (300, 100), 2) 
-    pygame.draw.line(screen, NOIR, (0, 200), (300, 200), 2)  
-    pygame.draw.line(screen, NOIR, (0, 300), (300, 300), 2)  
-    pygame.draw.line(screen, NOIR, (0, 0), (0, 300), 2)  
-    pygame.draw.line(screen, NOIR, (100, 0), (100, 300), 2)  
-    pygame.draw.line(screen, NOIR, (200, 0), (200, 300), 2)  
-    pygame.draw.line(screen, NOIR, (300, 0), (300, 300), 2) 
-
+    # Dessin des cases
     for i in range(3):
         for j in range(3):
-            if grille[i][j] != '*':
-                txt = font.render(str(grille[i][j]), True, NOIR)
-                rect = txt.get_rect(center=(j*CASE+50, i*CASE+50))
-                screen.blit(txt, rect)
+            val = grille[i][j]
+            
+            if val != '*':
+              
+                rect = pygame.Rect(j*CASE + 5, i*CASE + 5, CASE - 10, CASE - 10)
+                
+              
+                couleur_tuile = TURQUOISE
+                if rect.collidepoint((mx, my)) and not gagne:
+                    couleur_tuile = ORANGE
+                
+                # on rend les rectangles arrondis
+                pygame.draw.rect(screen, couleur_tuile, rect, border_radius=10)
+                pygame.draw.rect(screen, BLANC, rect, 2, border_radius=10) 
 
-    info = small_font.render(f"Coups : {nbcoups}", True, NOIR)
-    screen.blit(info, (10, 330))
+               
+                txt = font.render(str(val), True, BLANC)
+                rect_txt = txt.get_rect(center=rect.center)
+                screen.blit(txt, rect_txt)
+
+    # Zone du bas 
+    # Le fond change en vert si on gagne
+    couleur_fond_bas = VERT_VICTOIRE if gagne else BLEU_NUIT
+    pygame.draw.rect(screen, couleur_fond_bas, (0, 300, 300, 100))
+    pygame.draw.line(screen, BLANC, (0, 300), (300, 300), 3)
+
+    # Affichage du score
+    info = small_font.render(f"Coups : {nbcoups}", True, BLANC)
+    screen.blit(info, (20, 340))
 
     if gagne:
-        msg = small_font.render("Gagné 🎉", True, NOIR)
-        screen.blit(msg, (200, 330))
-
+        msg = small_font.render("Gagné ! Bravo 🎉", True, BLANC)
+        screen.blit(msg, (130, 340))
+ 
 
 
 clock = pygame.time.Clock()
 
+# boucle principale
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -107,6 +122,7 @@ while True:
             if y < 300:
                 i, j = y // CASE, x // CASE
                 vi, vj = trouve_case(grille, '*')
+                
                 if (i,j) in [(vi-1,vj),(vi+1,vj),(vi,vj-1),(vi,vj+1)]: 
                     intervertit(grille, (i, j))
                     nbcoups += 1
